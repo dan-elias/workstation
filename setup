@@ -63,7 +63,7 @@ sudo usermod -aG docker ${USER}
 cat << EOF
 Other steps:
     * If necessary, install Mediatek wifi driver using *install_mediatek_driver* script
-    * If necessary, configure nvidia GPU for calculations using  *conigure_gpu_for_calculations* script
+    * If necessary, configure nvidia GPU for calculations using  *configure_gpu_for_calculations* script
     * Install the latest version of docker-compose (example instructions here: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04)
     * Log out & back in before trying docker (eg: "docker ps"), or using any dockash scripts
     * Configure git:
