@@ -1,14 +1,35 @@
 #!/bin/bash
 
+################################################################################
+# Parameters
+
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 skel_home=$script_dir/skel_home
+
+
+################################################################################
+# misc programs
+
+sudo apt-get --yes install \
+    vim \
+    tree \
+    tmux
+
+
+################################################################################
+# Copy files
+
 for x in `ls -A $skel_home`
 do
     cp -r $skel_home/$x ~/
 done
 
+
+################################################################################
 # docker
 # ref: https://docs.docker.com/engine/install/ubuntu/
+# Could also use docker install convenience script as per: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+
 sudo apt-get --yes install \
     apt-transport-https \
     ca-certificates \
@@ -25,30 +46,24 @@ sudo apt-get --yes install \
     docker-ce \
     docker-ce-cli \
     containerd.io 
-# permissioning for docker
+# permissioning 
 # ref: https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket
 sudo groupadd docker
 sudo usermod -aG docker ${USER}
 
-# misc essentials
-sudo apt-get --yes install \
-    vim \
-    tree \
-    tmux
 
+
+################################################################################
 # Download dockash scripts
 ~/bin/download_dockash_scripts
 
 
-# git   # Replaced by dockash version, so config must be done after restart
-#sudo apt-get install --yes git
-#git config --global credential.helper store
-#git config --global core.editor vim
-
-# Other steps
+################################################################################
+# Post-install message
 cat << EOF
 Other steps:
     * If necessary, install Mediatek wifi driver using *install_mediatek_driver* script
+    * If necessary, configure nvidia GPU for calculations using  *conigure_gpu_for_calculations* script
     * Install the latest version of docker-compose (example instructions here: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04)
     * Log out & back in before trying docker (eg: "docker ps"), or using any dockash scripts
     * Configure git:
