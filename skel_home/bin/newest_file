@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#find $1 -type f -exec stat --format '%Y :%y %n' "{}" \; | sort -nr | cut -d: -f2- | head
+# Find the newest file in the directory tree
 
 root_path=${1:-.}
 
@@ -12,4 +12,3 @@ raw_path=$(
     | cut -d " " -f5)
 
 realpath --relative-to="${root_path}" "${raw_path}"
-
