@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#find $1 -type f -exec stat --format '%Y :%y %n' "{}" \; | sort -nr | cut -d: -f2- | head
+
+root_path=${1:-.}
+
+raw_path=$(
+    find ${root_path} -type f -print0 \
+    | xargs -0 stat --format '%Y :%y %n' \
+    | sort -nr \
+    | head -n 1 \
+    | cut -d " " -f5)
+
+realpath --relative-to="${root_path}" "${raw_path}"
+
