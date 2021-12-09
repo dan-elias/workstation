@@ -59,6 +59,15 @@ sudo usermod -aG docker ${USER}
 
 
 ################################################################################
+# Other containerized apps
+
+# zoom
+# ref: https://github.com/mdouchement/docker-zoom-us
+docker run -it --rm \
+  --volume /usr/local/bin:/target \
+  mdouchement/zoom-us:latest install
+
+################################################################################
 # Post-install message
 cat << EOF
 Other steps:
