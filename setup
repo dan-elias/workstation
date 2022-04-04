@@ -52,11 +52,13 @@ sudo groupadd docker
 sudo usermod -aG docker ${USER}
 
 
-
 ################################################################################
-# Download dockash scripts
-~/bin/download_dockash_scripts
+# Dockash and apps
 
+dockash_dest=~/bin/dockash
+curl --location --output "${dockash_dest}" https://raw.githubusercontent.com/dan-elias/dockash/master/dockash
+chmod +x "${dockash_dest}"
+for app in $(dockash all-apps); do dockash install --verbose $app; done
 
 ################################################################################
 # Other containerized apps
@@ -64,7 +66,7 @@ sudo usermod -aG docker ${USER}
 # zoom
 # ref: https://github.com/mdouchement/docker-zoom-us
 docker run -it --rm \
-  --volume /usr/local/bin:/target \
+  --volume $HOME/bin:/target \
   mdouchement/zoom-us:latest install
 
 ################################################################################
