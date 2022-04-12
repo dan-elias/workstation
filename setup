@@ -1,5 +1,21 @@
 #!/bin/bash
 
+
+################################################################################
+# Prerequisites
+
+cat << EOF
+To enable GPUs within docker, install the requirements for that first and then continue with this script.
+Example instructions:  https://gist.github.com/nathzi1505/d2aab27ff93a3a9d82dada1336c45041
+EOF
+
+read -n 1 -r -p "Continue? " yn
+echo    # (optional) move to a new line
+if [[ ! $yn =~ ^[Yy]$ ]]
+then
+    exit
+fi
+
 ################################################################################
 # Parameters
 
@@ -30,27 +46,28 @@ done
 # ref: https://docs.docker.com/engine/install/ubuntu/
 # Could also use docker install convenience script as per: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
 
-sudo apt-get --yes install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent \
-    software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-sudo apt-get update
-sudo apt-get --yes install \
-    docker-ce \
-    docker-ce-cli \
-    containerd.io 
-# permissioning 
-# ref: https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket
-sudo groupadd docker
-sudo usermod -aG docker ${USER}
-
+if [ "$(which docker)" == "" ]; then
+    sudo apt-get --yes install \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        gnupg-agent \
+        software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository \
+       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+       $(lsb_release -cs) \
+       stable"
+    sudo apt-get update
+    sudo apt-get --yes install \
+        docker-ce \
+        docker-ce-cli \
+        containerd.io 
+    # permissioning 
+    # ref: https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permission-denied-while-trying-to-connect-to-the-docker-daemon-socket
+    sudo groupadd docker
+    sudo usermod -aG docker ${USER}
+fi
 
 ################################################################################
 # Dockash and apps
@@ -74,7 +91,6 @@ docker run -it --rm \
 cat << EOF
 Other steps:
     * If necessary, install Mediatek wifi driver using *install_mediatek_driver* script
-    * If necessary, configure nvidia GPU for calculations using  *configure_gpu_for_calculations* script
     * Install the latest version of docker-compose (example instructions here: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04)
     * Log out & back in before trying docker (eg: "docker ps"), or using any dockash scripts
     * Configure git:
