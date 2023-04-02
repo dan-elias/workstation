@@ -29,7 +29,9 @@ skel_home=$script_dir/skel_home
 sudo apt-get --yes install \
     vim \
     tree \
-    tmux
+    tmux \
+    gnome-disk-utility \
+    cryptsetup
 
 
 ################################################################################
